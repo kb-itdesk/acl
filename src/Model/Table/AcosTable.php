@@ -1,4 +1,5 @@
 <?php
+
 /**
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
@@ -11,6 +12,7 @@
  * @link          http://cakephp.org CakePHP(tm) Project
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
+
 namespace Acl\Model\Table;
 
 use Acl\Model\Table\AclNodesTable;
@@ -29,7 +31,7 @@ class AcosTable extends AclNodesTable
      * @param array $config Config
      * @return void
      */
-    public function initialize(array $config)
+    public function initialize(array $config): void
     {
         parent::initialize($config);
         $this->setAlias('Acos');

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
@@ -11,9 +12,11 @@
  * @link          http://cakephp.org CakePHP(tm) Project
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
+
 namespace Acl\Shell;
 
 use Acl\Controller\Component\AclComponent;
+use Cake\Console\ConsoleOptionParser;
 use Cake\Console\Shell;
 use Cake\Controller\ComponentRegistry;
 use Cake\Controller\Controller;
@@ -56,7 +59,7 @@ class AclShell extends Shell
      *
      * @return void
      */
-    public function startup()
+    public function startup(): void
     {
         parent::startup();
         if (isset($this->params['connection'])) {
@@ -69,7 +72,8 @@ class AclShell extends Shell
         } else {
             $className = App::classname($class, 'Adapter');
         }
-        if ($class !== 'DbAcl' &&
+        if (
+            $class !== 'DbAcl' &&
             !is_subclass_of($className, 'Acl\Adapter\DbAcl')
         ) {
             $out = "--------------------------------------------------\n";
@@ -88,9 +92,9 @@ class AclShell extends Shell
                 TableRegistry::getTableLocator()->remove('Aros');
             } catch (\Cake\Database\Exception $e) {
                 $this->out(__d('cake_acl', 'Acl database tables not found. To create them, run:'));
-                $this->out();
+                $this->out('');
                 $this->out('  bin/cake Migrations.migrations migrate -p Acl');
-                $this->out();
+                $this->out('');
                 $this->_stop();
 
                 return;
@@ -365,7 +369,7 @@ class AclShell extends Shell
      *
      * @return ConsoleOptionParser
      */
-    public function getOptionParser()
+    public function getOptionParser(): ConsoleOptionParser
     {
         $parser = parent::getOptionParser();
 

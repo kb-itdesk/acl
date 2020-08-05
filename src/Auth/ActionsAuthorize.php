@@ -1,4 +1,5 @@
 <?php
+
 /**
  *
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
@@ -12,6 +13,7 @@
  * @link          http://cakephp.org CakePHP(tm) Project
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
+
 namespace Acl\Auth;
 
 use Cake\Http\ServerRequest;
@@ -33,7 +35,7 @@ class ActionsAuthorize extends BaseAuthorize
      * @param \Cake\Network\Request $request The request needing authorization.
      * @return bool
      */
-    public function authorize($user, ServerRequest $request)
+    public function authorize($user, ServerRequest $request): bool
     {
         $Acl = $this->_registry->load('Acl');
         $user = [$this->_config['userModel'] => $user];

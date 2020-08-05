@@ -1,4 +1,5 @@
 <?php
+
 /**
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
@@ -11,6 +12,7 @@
  * @link          http://cakephp.org CakePHP(tm) Project
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
+
 namespace Acl\Model\Table;
 
 use Cake\Core\App;
@@ -29,7 +31,7 @@ class AcoActionsTable extends Table
      * @param array $config Configuration
      * @return void
      */
-    public function initialize(array $config)
+    public function initialize(array $config): void
     {
         $this->belongsTo('Acos', [
             'className' => App::className('Acl.AcosTable', 'Model/Table'),
