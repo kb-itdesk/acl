@@ -137,4 +137,44 @@ class AcosTable extends AclNodesTable
 
         return $ret;
     }
+
+    public function getTree($parent = null)
+    {
+        $tree = $this->find("threaded", array(
+            'recursive' => -1,
+            'conditions' => array(
+                //                        "parent_id" => $parent
+            ),
+            'order' => $this->getAlias() . '.' . $this->getDisplayField() . ' ASC'
+        ));
+        return $tree;
+    }
+
+    public function _renderJsTree($ar, $id = 'tree')
+    {
+        $out = [];
+        foreach ($ar as $data) {
+            $new = [];
+            $description = '';
+            if (isset($data[$this->getAlias()]['description']) and !empty($data[$this->getAlias()]['description'])) {
+                $description = ' (' . $data[$this->getAlias()]['description'] . ')';
+            }
+            $name = '';
+            //            var_dump($ar);
+            if (isset($data[$this->getAlias()]['name']) and !empty($data[$this->getAlias()]['name'])) {
+                $name = ' ' . $data[$this->getAlias()]['name'];
+            } else {
+                $name = $data[$this->getAlias()][$this->getDisplayField()];
+            }
+
+            $new['text'] = $name . $description; // . ' ' . '<a href="' . Router::url(array('controller' => 'acos', 'action' => 'edit', $data[$this->getAlias()]['id'])) . '>Edytuj<i class="fa fa-pencil"></i></a>';
+            $new['id'] = $id . '-id-' . $data[$this->getAlias()]['id'];
+            //            if ($data['ClientsHasCategories']['id'] != null) {
+            //                $new['state'] = ['selected' => true];
+            //            }
+            $new['children'] = $this->_renderJsTree($data['children']);
+            $out[] = $new;
+        }
+        return $out;
+    }
 }
