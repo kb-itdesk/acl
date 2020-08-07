@@ -18,6 +18,7 @@ namespace Acl\Model\Table;
 use Cake\Core\App;
 use Cake\Core\Configure;
 use Cake\Core\Exception\Exception;
+use Cake\Log\Log;
 use Cake\ORM\Table;
 use Cake\Utility\Hash;
 
@@ -67,37 +68,49 @@ class PermissionsTable extends AclNodesTable
         $acoPath = $this->Aco->node($aco);
 
         if (!$aroPath) {
-            trigger_error(
-                __d(
-                    'cake_dev',
-                    "{0} - Failed ARO node lookup in permissions check. Node references:\nAro: {1}\nAco: {2}",
-                    'DbAcl::check()',
-                    print_r($aro, true),
-                    print_r($aco, true)
-                ),
-                E_USER_WARNING
-            );
+            Log::write('warning', __(
+                '{0} - Failed ARO node lookup in permissions check. Node references:\nAro: {1}\nAco: {2}',
+                'DbAcl::check()',
+                print_r($aro, true),
+                print_r($aco, true)
+            ));
+            // trigger_error(
+            //     __d(
+            //         'cake_dev',
+            //         "{0} - Failed ARO node lookup in permissions check. Node references:\nAro: {1}\nAco: {2}",
+            //         'DbAcl::check()',
+            //         print_r($aro, true),
+            //         print_r($aco, true)
+            //     ),
+            //     E_USER_WARNING
+            // );
 
             return false;
         }
 
         if (!$acoPath) {
-            trigger_error(
-                __d(
-                    'cake_dev',
-                    "{0} - Failed ACO node lookup in permissions check. Node references:\nAro: {1}\nAco: {2}",
-                    'DbAcl::check()',
-                    print_r($aro, true),
-                    print_r($aco, true)
-                ),
-                E_USER_WARNING
-            );
-
+            Log::write('warning', __(
+                '{0} - Failed ACO node lookup in permissions check. Node references:\nAro: {1}\nAco: {2}',
+                'DbAcl::check()',
+                print_r($aro, true),
+                print_r($aco, true)
+            ));
+            // trigger_error(
+            //     __d(
+            //         'cake_dev',
+            //         "{0} - Failed ACO node lookup in permissions check. Node references:\nAro: {1}\nAco: {2}",
+            //         'DbAcl::check()',
+            //         print_r($aro, true),
+            //         print_r($aco, true)
+            //     ),
+            //     E_USER_WARNING
+            // );
             return false;
         }
 
         if ($action !== '*' && !in_array('_' . $action, $permKeys)) {
-            trigger_error(__d('cake_dev', "ACO permissions key {0} does not exist in {1}", $action, 'DbAcl::check()'), E_USER_NOTICE);
+            Log::write('warning', __("ACO permissions key {0} does not exist in {1}", $action, 'DbAcl::check()'));
+            // trigger_error(__d('cake_dev', "ACO permissions key {0} does not exist in {1}", $action, 'DbAcl::check()'), E_USER_NOTICE);
 
             return false;
         }
@@ -172,7 +185,11 @@ class PermissionsTable extends AclNodesTable
         $save = [];
 
         if (!$perms) {
-            trigger_error(__d('cake_dev', '{0} - Invalid node', ['DbAcl::allow()']), E_USER_WARNING);
+            Log::write('warning', __(
+                '{0} - Invalid node',
+                'DbAcl::allow()'
+            ));
+            // trigger_error(__d('cake_dev', '{0} - Invalid node', ['DbAcl::allow()']), E_USER_WARNING);
 
             return false;
         }
@@ -185,7 +202,7 @@ class PermissionsTable extends AclNodesTable
         } else {
             if (!is_array($actions)) {
                 if ($actions{
-                0} !== '_') {
+                    0} !== '_') {
                     $actions = ['_' . $actions];
                 } else {
                     $actions = [$actions];
@@ -193,7 +210,7 @@ class PermissionsTable extends AclNodesTable
             }
             foreach ($actions as $action) {
                 if ($action{
-                0} !== '_') {
+                    0} !== '_') {
                     $action = '_' . $action;
                 }
                 if (!in_array($action, $permKeys, true)) {
