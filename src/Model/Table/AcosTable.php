@@ -156,19 +156,13 @@ class AcosTable extends AclNodesTable
         foreach ($ar as $data) {
             $new = [];
             $description = '';
-            if (isset($data[$this->getAlias()]['description']) and !empty($data[$this->getAlias()]['description'])) {
-                $description = ' (' . $data[$this->getAlias()]['description'] . ')';
+            if (!empty($data->get('description'))) {
+                $description = ' (' . $data->get('description') . ')';
             }
-            $name = '';
-            //            var_dump($ar);
-            if (isset($data[$this->getAlias()]['name']) and !empty($data[$this->getAlias()]['name'])) {
-                $name = ' ' . $data[$this->getAlias()]['name'];
-            } else {
-                $name = $data[$this->getAlias()][$this->getDisplayField()];
-            }
+            $name = $data->get('alias');
 
             $new['text'] = $name . $description; // . ' ' . '<a href="' . Router::url(array('controller' => 'acos', 'action' => 'edit', $data[$this->getAlias()]['id'])) . '>Edytuj<i class="fa fa-pencil"></i></a>';
-            $new['id'] = $id . '-id-' . $data[$this->getAlias()]['id'];
+            $new['id'] = $id . '-id-' . $data->get('id');
             //            if ($data['ClientsHasCategories']['id'] != null) {
             //                $new['state'] = ['selected' => true];
             //            }
