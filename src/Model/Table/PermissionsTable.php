@@ -125,7 +125,7 @@ class PermissionsTable extends AclNodesTable
 
             $perms = $this->find('all', [
                 'conditions' => [
-                    "{$permAlias}.aro_id" => $aroPaths[$i]->id,
+                    "{$permAlias}.aro_id" => $aroPaths[$i]->foreign_key,
                     "{$permAlias}.aco_id IN" => $acoIDs
                 ],
                 'order' => [$this->Aco->getAlias() . '.lft' => 'desc'],
