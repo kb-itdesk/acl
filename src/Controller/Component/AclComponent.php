@@ -1,4 +1,5 @@
 <?php
+
 /**
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
@@ -11,6 +12,7 @@
  * @link          http://cakephp.org CakePHP(tm) Project
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
+
 namespace Acl\Controller\Component;
 
 use Acl\AclInterface;
@@ -160,5 +162,27 @@ class AclComponent extends Component
     public function inherit($aro, $aco, $action = "*")
     {
         return $this->_Instance->inherit($aro, $aco, $action);
+    }
+
+    /**
+     * Checks if ARO model has property with specified value
+     *
+     * @param array $admin Array with properties
+     * @param [type] $aro ARO model object
+     * @return boolean
+     */
+    public function isAdmin(array $admin, $aro)
+    {
+        foreach ($admin as $property => $value) {
+            if (in_array($property, get_class_methods($aro))) {
+                $aroVal = $aro->{$property}();
+            } else {
+                $aroVal = $aro->{$property};
+            }
+            if ($aroVal == $value) {
+                return true;
+            }
+        }
+        return false;
     }
 }
