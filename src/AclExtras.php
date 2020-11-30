@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Acl Extras.
  *
@@ -10,6 +11,7 @@
  * @author Mark Story <mark@mark-story.com>
  * @license http://www.opensource.org/licenses/mit-license.php The MIT License
  */
+
 namespace Acl;
 
 use Acl\Controller\Component\AclComponent;
@@ -305,7 +307,7 @@ class AclExtras
      */
     protected function _updateControllers($root, $controllers, $plugin = null, $prefix = null)
     {
-        $pluginPath = $this->_pluginAlias($plugin);
+        $pluginPath = $plugin ? $this->_pluginAlias($plugin) : null;
 
         // look at each controller
         $controllersNames = [];
@@ -348,11 +350,11 @@ class AclExtras
     public function getControllerList($plugin = null, $prefix = null)
     {
         if (!$plugin) {
-            $path = App::path('Controller' . (empty($prefix) ? '' : DS . Inflector::camelize($prefix)));
+            $path = App::classPath('Controller' . (empty($prefix) ? '' : DS . Inflector::camelize($prefix)));
             $dir = new Folder($path[0]);
             $controllers = $dir->find('.*Controller\.php');
         } else {
-            $path = App::path('Controller' . (empty($prefix) ? '' : DS . Inflector::camelize($prefix)), $plugin);
+            $path = App::classPath('Controller' . (empty($prefix) ? '' : DS . Inflector::camelize($prefix)), $plugin);
             $dir = new Folder($path[0]);
             $controllers = $dir->find('.*Controller\.php');
         }
@@ -502,7 +504,7 @@ class AclExtras
         $namespace = preg_replace('/(.*)Controller\//', '', $className);
         $namespace = preg_replace('/\//', '\\', $namespace);
         $namespace = preg_replace('/\.php/', '', $namespace);
-        $prefixPath = preg_replace('/\//', '\\', Inflector::camelize($prefixPath));
+        $prefixPath = $prefixPath ? preg_replace('/\//', '\\', Inflector::camelize($prefixPath)) : null;
         if (!$pluginPath) {
             $rootNamespace = Configure::read('App.namespace');
         } else {
